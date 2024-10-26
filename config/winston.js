@@ -1,7 +1,10 @@
+// config/winston.js
 const { createLogger, format, transports } = require('winston');
+const { MongoDB } = require('winston-mongodb');
 
+// Create a logger
 const logger = createLogger({
-    level: 'info',
+    level: 'error', // Log only errors and above
     format: format.combine(
         format.timestamp(),
         format.json()
@@ -9,8 +12,13 @@ const logger = createLogger({
     transports: [
         // Log to the console
         new transports.Console(),
-        // Optionally, you can add a cloud-based logging service
-        // e.g., new transports.Http({ url: 'https://example.com/logs' })
+        // Log errors to MongoDB
+        new MongoDB({
+            db: 'mongodb+srv://admin:admin@learningcluster.yywhd.mongodb.net/lbfancydressdb', // Update with your MongoDB connection string
+            collection: 'error_logs', // Name of the collection to store logs
+            level: 'error', // Log level to store
+            format: format.json(),
+        }),
     ]
 });
 
