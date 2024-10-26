@@ -1,20 +1,24 @@
+// config/winston.js
 const { createLogger, format, transports } = require('winston');
-require('winston-mongodb');
+const path = require('path');
+const fs = require('fs');
+
+// Define the logs directory
+const logsDir = path.join(__dirname, '../logs');
+
+// Check if the logs directory exists, if not create it
+if (!fs.existsSync(logsDir)) {
+    fs.mkdirSync(logsDir, { recursive: true }); // recursive: true creates nested directories
+}
 
 const logger = createLogger({
-    level: 'info',
     format: format.combine(
         format.timestamp(),
         format.json()
     ),
     transports: [
-        new transports.File({ filename: 'logs/error.log', level: 'error' }),
-        new transports.MongoDB({
-            level: 'error',
-            db: process.env.MONGO_URI,
-            collection: 'log_errors'
-            // Removed useUnifiedTopology and other deprecated options
-        })
+        new transports.Console(),
+        new transports.File({ filename: path.join(logsDir, 'error.log') })
     ]
 });
 
