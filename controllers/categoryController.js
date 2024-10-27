@@ -1,6 +1,5 @@
 // controllers/categoryController.js
 const Category = require('../models/Category');
-const winston = require('../config/winston');
 
 exports.createCategory = async (req, res) => {
     try {
@@ -20,7 +19,6 @@ exports.createCategory = async (req, res) => {
         await category.save();
         res.status(201).json({ message: 'Category created successfully', category });
     } catch (error) {
-        winston.error(error.message);
         res.status(500).json({ message: 'Error creating category' });
     }
 };
@@ -30,7 +28,6 @@ exports.getAllCategories = async (req, res) => {
         const categories = await Category.find().populate('admin', '-password'); // Exclude admin password
         res.json(categories);
     } catch (error) {
-        winston.error(error.message);
         res.status(500).json({ message: 'Error fetching categories' });
     }
 };
@@ -43,7 +40,6 @@ exports.getCategoryById = async (req, res) => {
         }
         res.json(category);
     } catch (error) {
-        winston.error(error.message);
         res.status(500).json({ message: 'Error fetching category' });
     }
 };
@@ -54,7 +50,6 @@ exports.updateCategory = async (req, res) => {
         const category = await Category.findByIdAndUpdate(req.params.id, updateData, { new: true });
         res.json({ message: 'Category updated successfully', category });
     } catch (error) {
-        winston.error(error.message);
         res.status(500).json({ message: 'Error updating category' });
     }
 };
@@ -67,7 +62,6 @@ exports.deleteCategory = async (req, res) => {
         }
         res.json({ message: 'Category deleted successfully' });
     } catch (error) {
-        winston.error(error.message);
         res.status(500).json({ message: 'Error deleting category' });
     }
 };

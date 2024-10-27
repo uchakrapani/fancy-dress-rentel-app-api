@@ -1,6 +1,5 @@
 // controllers/locationController.js
 const Location = require('../models/Location');
-const winston = require('../config/winston');
 
 exports.createLocation = async (req, res) => {
     try {
@@ -22,7 +21,6 @@ exports.createLocation = async (req, res) => {
         await location.save();
         res.status(201).json({ message: 'Location created successfully', location });
     } catch (error) {
-        winston.error(error.message);
         res.status(500).json({ message: 'Error creating location' });
     }
 };
@@ -32,7 +30,6 @@ exports.getAllLocations = async (req, res) => {
         const locations = await Location.find().populate('admin', '-password'); // Exclude admin password
         res.json(locations);
     } catch (error) {
-        winston.error(error.message);
         res.status(500).json({ message: 'Error fetching locations' });
     }
 };
@@ -45,7 +42,6 @@ exports.getLocationById = async (req, res) => {
         }
         res.json(location);
     } catch (error) {
-        winston.error(error.message);
         res.status(500).json({ message: 'Error fetching location' });
     }
 };
@@ -56,7 +52,6 @@ exports.updateLocation = async (req, res) => {
         const location = await Location.findByIdAndUpdate(req.params.id, updateData, { new: true });
         res.json({ message: 'Location updated successfully', location });
     } catch (error) {
-        winston.error(error.message);
         res.status(500).json({ message: 'Error updating location' });
     }
 };
@@ -69,7 +64,6 @@ exports.deleteLocation = async (req, res) => {
         }
         res.json({ message: 'Location deleted successfully' });
     } catch (error) {
-        winston.error(error.message);
         res.status(500).json({ message: 'Error deleting location' });
     }
 };

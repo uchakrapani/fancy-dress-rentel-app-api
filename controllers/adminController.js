@@ -1,6 +1,5 @@
 const Admin = require('../models/Admin');
 const bcrypt = require('bcrypt');
-const winston = require('../config/winston');
 
 exports.createAdmin = async (req, res) => {
     try {
@@ -8,7 +7,6 @@ exports.createAdmin = async (req, res) => {
         await admin.save();
         res.status(201).json({ message: 'Admin created successfully', admin });
     } catch (error) {
-        winston.error(error.message);
         res.status(500).json({ message: 'Error creating admin' });
     }
 };
@@ -18,7 +16,6 @@ exports.getAllAdmins = async (req, res) => {
         const admins = await Admin.find().select('-password');
         res.json(admins);
     } catch (error) {
-        winston.error(error.message);
         res.status(500).json({ message: 'Error fetching admins' });
     }
 };
@@ -31,7 +28,6 @@ exports.getAdminById = async (req, res) => {
         }
         res.json(admin);
     } catch (error) {
-        winston.error(error.message);
         res.status(500).json({ message: 'Error fetching admin' });
     }
 };
@@ -46,7 +42,6 @@ exports.updateAdmin = async (req, res) => {
         const admin = await Admin.findByIdAndUpdate(req.params.id, updateData, { new: true });
         res.json({ message: 'Admin updated successfully', admin });
     } catch (error) {
-        winston.error(error.message);
         res.status(500).json({ message: 'Error updating admin' });
     }
 };
@@ -59,7 +54,6 @@ exports.deleteAdmin = async (req, res) => {
         }
         res.json({ message: 'Admin deleted successfully' });
     } catch (error) {
-        winston.error(error.message);
         res.status(500).json({ message: 'Error deleting admin' });
     }
 };
