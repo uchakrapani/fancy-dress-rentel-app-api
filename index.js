@@ -29,14 +29,14 @@ app.get("/", (req, res) => {
 });
 
 // Set up Swagger
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Middleware
 app.use(express.json()); // Parse JSON bodies
 app.use("/api/admins", adminRoutes); // Admin routes
 app.use("/api/locations", locationRoutes);
 app.use("/api/categories", categoryRoutes);
-app.use("/errorlogs", errorLogRoutes);
+app.use("/api/errorlogs", errorLogRoutes);
 
 // Error logging middleware
 app.use((err, req, res, next) => {
